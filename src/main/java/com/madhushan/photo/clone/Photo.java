@@ -1,9 +1,18 @@
 package com.madhushan.photo.clone;
 
+import jakarta.validation.constraints.NotEmpty;
+
 public class Photo {
 	
+	
+	
 	private String id;
+	@NotEmpty
 	private String folderAddress;
+	
+	public Photo() {
+		
+	}
 	
 	
 	public Photo(String id, String folderAddress) {
