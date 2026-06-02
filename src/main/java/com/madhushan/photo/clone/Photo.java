@@ -7,8 +7,11 @@ public class Photo {
 	
 	
 	private String id;
+	
 	@NotEmpty
 	private String folderAddress;
+	
+	private byte[] data;
 	
 	public Photo() {
 		
@@ -51,6 +54,16 @@ public class Photo {
 	public void setFolderAddress(String folderAddress) {
 		this.folderAddress = folderAddress;
 	}
+	
+	public byte[] getData() {
+		return data;
+	}
+
+
+	public void setData(byte[] data) {
+		this.data = data;
+	}
+
 
 
 	
