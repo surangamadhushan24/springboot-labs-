@@ -1,33 +1,45 @@
-package com.madhushan.photo.clone;
+package com.madhushan.photo.clone.model;
+
+import org.springframework.data.annotation.Id;
+import org.springframework.data.relational.core.mapping.Table;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import jakarta.validation.constraints.NotEmpty;
 
+
+@Table(name = "PHOTOS")
 public class Photo {
 	
 	
-	
-	private String id;
+	@Id
+	private Integer id;
 	
 	@NotEmpty
 	private String folderAddress;
-	
+	@JsonIgnore
 	private byte[] data;
 	
+	private String contentType;
+	
+	public String getContentType() {
+		return contentType;
+	}
+
+
+	public void setContentType(String contentType) {
+		this.contentType = contentType;
+	}
+
+
 	public Photo() {
 		
 	}
 	
-	
-	public Photo(String id, String folderAddress) {
-		this.id = id;
-		this.folderAddress = folderAddress;
-	}
-	
-	
 	/**
 	 * @return the id
 	 */
-	public String getId() {
+	public Integer getId() {
 		return id;
 	}
 
@@ -35,7 +47,7 @@ public class Photo {
 	/**
 	 * @param id the id to set
 	 */
-	public void setId(String id) {
+	public void setId(Integer id) {
 		this.id = id;
 	}
 

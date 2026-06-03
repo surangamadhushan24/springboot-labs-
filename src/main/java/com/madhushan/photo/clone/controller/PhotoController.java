@@ -1,4 +1,4 @@
-package com.madhushan.photo.clone;
+package com.madhushan.photo.clone.controller;
 
 import java.io.IOException;
 import java.util.Collection;
@@ -16,45 +16,46 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.server.ResponseStatusException;
 
+import com.madhushan.photo.clone.model.Photo;
+import com.madhushan.photo.clone.service.PhotoService;
+
 
 
 @RestController
 public class PhotoController {
+	
+	private final PhotoService photoService;
+	
 
-	private final Map<String, Photo> db = new HashMap<>(Map.of("1", new Photo("1", "hh.jpg")));
-
-	@GetMapping("/")
-	public String hello() {
-		return "hello world";
+	public PhotoController(PhotoService photoService) {
+		this.photoService = photoService;
 	}
 
+
 	@GetMapping("/photos")
-	public Collection<Photo> getPhotos() {
-		return db.values();
+	public Iterable<Photo> getPhotos() {
+		return photoService.getPhotos();
 
 	}
 	
 	@GetMapping("photos/{id}")
-	public Photo getphoto(@PathVariable String id) {
-		Photo photo = db.get(id);
+	public Photo getphoto(@PathVariable Integer id) {
+		Photo photo = photoService.getPhoto(id);
 		if(photo == null) throw new ResponseStatusException(HttpStatus.NOT_FOUND);
 		return photo;
 		
 	}
 	
 	@DeleteMapping("photos/{id}")
-	public void deletePhoto(@PathVariable String id) {
-		Photo photo = db.remove(id);
-		if(photo == null) throw new ResponseStatusException(HttpStatus.NOT_FOUND);	
+	public void deletePhoto(@PathVariable Integer id) {
+		 photoService.remove(id);
+	
 	}
 
 	@PostMapping("/add")
-	public void create(@RequestPart("data") MultipartFile file) throws IOException {
-		Photo photo = new Photo();
-		photo.setId(UUID.randomUUID().toString());
-		photo.setFolderAddress(file.getOriginalFilename());
-		photo.setData(file.getBytes());
-		db.put(photo.getId(), photo);
+	public Photo create(@RequestPart("data") MultipartFile file) throws IOException {
+	    Photo photo = photoService.addPhoto(file.getOriginalFilename(),file.getContentType(),file.getBytes());
+		return photo;
 	}
 
 }
